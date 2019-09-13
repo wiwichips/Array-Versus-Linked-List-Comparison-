@@ -18,5 +18,5 @@ struct ds_file_struct{
 	struct ds_blocks_struct block[MAX_BLOCKS];
 };
 
-// Functions
+/* Functions*/
 void printer();
