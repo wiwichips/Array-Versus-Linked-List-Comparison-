@@ -1,7 +1,8 @@
 #include "ds_memory.h"
 
-int main(){
-	printf("hello worlds\n");
+void printer(){
+	printf("heheh");
 	
-	return 0;
+	
+	return;
 }
