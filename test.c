@@ -1,7 +1,7 @@
 #include "ds_memory.h"
 
 int main(){
-	printf("hello worlwds\n");
+	printf("hello worlw3ds\n");
 	
 	printer(); 
 	
