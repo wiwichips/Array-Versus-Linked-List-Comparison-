@@ -63,9 +63,43 @@ int ds_init(char *filename) {
 }
 
 long ds_malloc(long amount) {
+	int i;
+	int j;
+int k;
 	
+	/* search through every block until find one with length >= amount */
+	for(i = 0; i < MAX_BLOCKS; i++) {
+		if(!ds_file.block[i].alloced && ds_file.block[i].length >= amount) {		
+			
+			/* look for a block to transfer the remaining bytes to */
+			for(j = 0; j < MAX_BLOCKS; j++) {
+				if(ds_file.block[j].length == 0 && !ds_file.block[j].alloced) {
+					/* set the transfer block's length to the excess length */
+					ds_file.block[j].length = ds_file.block[i].length - amount;
+					
+					/* set the malloced' block to alloced and to the amount */
+					ds_file.block[i].alloced = 1;
+					ds_file.block[i].length = amount;
+					
+					/* set the start of the block new shifted block */
+					ds_file.block[j].start = ds_file.block[j-1].length
+					+ ds_file.block[j-1].start;
+
+					
+printf("Block #\t\t start\t\tlength\t\talloced\n");
+for(k = 0; k < 15; k++) {
+printf("%d\t\t%ld\t\t%ld\t\t%d\n", 
+k, ds_file.block[k].start, ds_file.block[k].length, 
+ds_file.block[k].alloced);
+}
+					
+					return ds_file.block[i].start;
+				}
+			}	
+		}
+	}
 	
-	return 0;
+	return -1;
 }
 
 /*
