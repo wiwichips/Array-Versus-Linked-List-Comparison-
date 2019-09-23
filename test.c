@@ -20,6 +20,10 @@ int main(){
 	
 	printf("\nthe location is %ld\n\n", ds_malloc(92));
 	
+	ds_free(555);
+	
+	printf("\nthe location is %ld\n\n", ds_malloc(580));
+	
 	
 	return 0;
 }

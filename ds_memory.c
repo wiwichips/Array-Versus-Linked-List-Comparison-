@@ -102,9 +102,22 @@ ds_file.block[k].alloced);
 	return -1;
 }
 
-/*
-void ds_free(long start);
+void ds_free(long start) {
+	int i;
+	
+	/* look for the block to be freed and free it */
+	for(i = 0; i < MAX_BLOCKS; i++){
+		if(start == ds_file.block[i].start) {
+			ds_file.block[i].alloced = 0;
+		}
+		
+	}
+	
+	/* print error message */
+	printf("That block doesn't exist\n");
+}
 
+/*
 void *ds_read(void *ptr, long start, long bytes);
 
 long ds_write(long start, void *ptr, long bytes);
