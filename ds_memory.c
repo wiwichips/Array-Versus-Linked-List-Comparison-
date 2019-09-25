@@ -134,7 +134,7 @@ void ds_free(long start) {
 }
 
 
-void *ds_read(void *ptr, long start, long bytes){
+void *ds_read(void *ptr, long start, long bytes) {
 	long isSuccessful;
 	
 	/* set the position in the file. Return NULL if unsuccessful */
@@ -156,7 +156,7 @@ void *ds_read(void *ptr, long start, long bytes){
 }
 
 
-long ds_write(long start, void *ptr, long bytes){
+long ds_write(long start, void *ptr, long bytes) {
 	long isSuccessful;
 	
 	isSuccessful = setPositionInFile(start);
@@ -173,9 +173,34 @@ long ds_write(long start, void *ptr, long bytes){
 	return start;
 }
 
-/*
-int ds_finish();
-*/
+int ds_finish() {
+	int isSuccessful = 1;
+	
+	isSuccessful = fseek(ds_file.fp, 0, SEEK_SET);
+	
+	if(isSuccessful){
+printf("fseek failure\n");
+		return 0;
+	}
+	
+	fwrite(ds_file.block, sizeof(ds_file.block), 1, ds_file.fp);
+	
+	isSuccessful = fclose(ds_file.fp);
+	
+	if(isSuccessful){
+printf("fclose failre: %d\n", isSuccessful);
+		return 0;
+	}
+	
+	/* print the number of reads and writes */
+	printf("reads: %d\nwrites: %d\n", ds_counts.reads, ds_counts.writes);
+	
+	return 1;
+}
+	
+	
+
+/* Helper Functions */
 
 int setPositionInFile(long start){
 	int isSuccessful = 0; 

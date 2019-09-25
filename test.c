@@ -1,6 +1,7 @@
 #include "ds_memory.h"
 
 void thing();
+void readtester();
 
 int main(){
 	/*
@@ -14,7 +15,7 @@ int main(){
 	*/
 	
 	thing();
-	
+	readtester();
 	
 	
 	return 0;
@@ -81,56 +82,48 @@ void thing(){
 	ds_write(memory[4], &i2, sizeof(i2));
 	
 	printf("////// - BEFORE 5 - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	memory[5] = ds_malloc(sizeof(i1));
 	ds_write(memory[5], &i1, sizeof(i1));
 	
 	ds_free(memory[5]);
 	
 	printf("////// - BEFORE 6 - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	/* allocate and write longs, free one of them */
 	memory[6] = ds_malloc(sizeof(l1));
 	ds_write(memory[6], &l1, sizeof(l1));
 	
 	printf("////// - BEFORE 7 - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	memory[7] = ds_malloc(sizeof(l2));
 	ds_write(memory[7], &l2, sizeof(l2));
 	
 	ds_free(memory[7]);
 	
 	printf("////// - BEFORE 8 - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	/* allocate and write floats, free one of them */
 	memory[8] = ds_malloc(sizeof(f1));
 	ds_write(memory[8], &f1, sizeof(f1));
 	
 	printf("////// - BEFORE 9 - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	memory[9] = ds_malloc(sizeof(f2));
 	ds_write(memory[9], &f2, sizeof(f2));
 	
 	printf("////// - BEFORE free(9) - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	ds_free(memory[9]);
 	
 	printf("////// - BEFORE 10 - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	/* allocate and write d oubles free one of them */
 	memory[10] = ds_malloc(sizeof(d1));
 	ds_write(memory[10], &d1, sizeof(d1));
 	
 	printf("////// - BEFORE 11 - ////////\n\n");
-	printer();
-	
+/*	printer();*/	
 	memory[11] = ds_malloc(sizeof(d2));
 	ds_write(memory[11], &d2, sizeof(d2));
 	
@@ -144,7 +137,36 @@ void thing(){
 		
 	}
 	
-	printer();
+/*	printer();*/
+	
+	ds_finish();
+	
+	return;
+}
+
+void readtester(){
+	
+	unsigned char c1;
+	unsigned short s1;
+	unsigned int i1;
+	unsigned long l1;
+	float f1;
+	double d1;
+	long memory [6] = { 0, 2, 6, 14, 30};
+	
+	/* values copied from output of ds_write */
+	ds_init( "test.bin");
+
+	ds_read( &c1, memory[0],sizeof( c1 ) );
+	ds_read( &s1, memory[1],sizeof( s1 ) );
+	ds_read( &i1, memory[2],sizeof( i1 ) );
+	ds_read( &l1, memory[3], sizeof( l1 ) );
+	ds_read( &f1, memory[4],sizeof( f1 ) );
+	ds_read( &d1, memory[5],sizeof( d1 ) );
+	
+	printf( "%d%d%d%ld%f%f\n", c1, s1, i1, l1, f1, d1 );
+	
+	ds_finish();
 	
 	return;
 }
