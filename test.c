@@ -13,7 +13,6 @@ int main(){
 	
 	ds_init("test.bin");
 	*/
-	
 	thing();
 	readtester();
 	

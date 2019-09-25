@@ -61,15 +61,6 @@ int ds_init(char *filename) {
 	
 	return 0;
 }
-/*
-long ds_malloc(long amount) {
-
-
-
-
-	return amount;
-}
-*/
 
 /*
  * ds malloc needs an overhaul. maybe re do it?
@@ -179,7 +170,6 @@ int ds_finish() {
 	isSuccessful = fseek(ds_file.fp, 0, SEEK_SET);
 	
 	if(isSuccessful){
-printf("fseek failure\n");
 		return 0;
 	}
 	
@@ -188,7 +178,6 @@ printf("fseek failure\n");
 	isSuccessful = fclose(ds_file.fp);
 	
 	if(isSuccessful){
-printf("fclose failre: %d\n", isSuccessful);
 		return 0;
 	}
 	
