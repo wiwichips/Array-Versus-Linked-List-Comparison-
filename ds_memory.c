@@ -9,7 +9,7 @@ int ds_create(char *filename, long size) {
 	char byte = 0; /* used so I can write 0 */
 	
 	/* open the file */
-	filePointer = fopen(filename, "a");
+	filePointer = fopen(filename, "ab");
 
 	/* if filePointer is NULL return 1 */
 	if (filePointer == 0) {
@@ -43,7 +43,7 @@ int ds_init(char *filename) {
 	FILE *filePointer;
 	
 	/* try to open the file */
-	filePointer = fopen(filename, "r+");
+	filePointer = fopen(filename, "rb+");
 	
 	/* return 1 if the file does not exist */
 	if(filePointer == 0) {
@@ -61,44 +61,59 @@ int ds_init(char *filename) {
 	
 	return 0;
 }
+/*
+long ds_malloc(long amount) {
 
+
+
+
+	return amount;
+}
+*/
+
+/*
+ * ds malloc needs an overhaul. maybe re do it?
+ */
 long ds_malloc(long amount) {
 	int i;
 	int j;
-int k;
+	int excess;
 	
 	/* search through every block until find one with length >= amount */
 	for(i = 0; i < MAX_BLOCKS; i++) {
-		if(!ds_file.block[i].alloced && ds_file.block[i].length >= amount) {		
-			
+		
+printf("#%dLOOP --> alloced = %d\tlength = %ld\tamount = %ld\n", i, ds_file.block[i].alloced, ds_file.block[i].length, amount);
+		
+		if(ds_file.block[i].alloced != 1 && ds_file.block[i].length >= amount){		
+printf("OKAY SECURED ON BLOCK %d\n aloced = %d\n", i, ds_file.block[i].alloced);
+
+
 			/* look for a block to transfer the remaining bytes to */
 			for(j = 0; j < MAX_BLOCKS; j++) {
-				if(ds_file.block[j].length == 0 && !ds_file.block[j].alloced) {
-					/* set the transfer block's length to the excess length */
-					ds_file.block[j].length = ds_file.block[i].length - amount;
+				if(ds_file.block[j].length == 0 
+				&& !ds_file.block[j].alloced
+				&& j != i) {
+					/* find the excess amount of bytes */
+					excess = ds_file.block[i].length - amount;
 					
-					/* set the malloced' block to alloced and to the amount */
-					ds_file.block[i].alloced = 1;
+					/* set the length of the malloc'd block to amount */
 					ds_file.block[i].length = amount;
+					ds_file.block[i].alloced = 1;
 					
-					/* set the start of the block new shifted block */
-					ds_file.block[j].start = ds_file.block[j-1].length
-					+ ds_file.block[j-1].start;
+					
+					/* set the transfer block's length to the excess length */
+					ds_file.block[j].length = ds_file.block[j].length + excess;
+					
+					/* set the new start of the block found to move stuff */
+					ds_file.block[j].start = amount + ds_file.block[i].start;
 
-					
-printf("Block #\t\t start\t\tlength\t\talloced\n");
-for(k = 0; k < 15; k++) {
-printf("%d\t\t%ld\t\t%ld\t\t%d\n", 
-k, ds_file.block[k].start, ds_file.block[k].length, 
-ds_file.block[k].alloced);
-}
-					
+
 					return ds_file.block[i].start;
 				}
 			}	
 		}
 	}
-	
+	printf("failure in malloc\n");
 	return -1;
 }
 
@@ -109,6 +124,7 @@ void ds_free(long start) {
 	for(i = 0; i < MAX_BLOCKS; i++){
 		if(start == ds_file.block[i].start) {
 			ds_file.block[i].alloced = 0;
+			return;
 		}
 		
 	}
@@ -117,10 +133,77 @@ void ds_free(long start) {
 	printf("That block doesn't exist\n");
 }
 
+
+void *ds_read(void *ptr, long start, long bytes){
+	long isSuccessful;
+	
+	/* set the position in the file. Return NULL if unsuccessful */
+	isSuccessful = setPositionInFile(start);
+	if(isSuccessful) {
+		return NULL;
+	}
+	
+	/* read the data into ptr. Return NULL if unsuccessful */
+	isSuccessful = fread(ptr, bytes, 1, ds_file.fp);
+	if(!isSuccessful) {
+		return NULL;
+	}
+	
+	/* increment the reads by 1 */
+	ds_counts.reads++;
+	
+	return ptr;
+}
+
+
+long ds_write(long start, void *ptr, long bytes){
+	long isSuccessful;
+	
+	isSuccessful = setPositionInFile(start);
+	if(isSuccessful) {
+		return -1;
+	}
+	
+	/* write the data into the file */
+	isSuccessful = fwrite(ptr, bytes, 1, ds_file.fp);
+	
+	/* increment the writes by 1 */
+	ds_counts.writes++;
+	
+	return start;
+}
+
 /*
-void *ds_read(void *ptr, long start, long bytes);
-
-long ds_write(long start, void *ptr, long bytes);
-
 int ds_finish();
 */
+
+int setPositionInFile(long start){
+	int isSuccessful = 0; 
+	
+	/* find the size of the header */
+	long headerLength = sizeof(ds_file.block) * MAX_BLOCKS;
+	
+	/* set the file position to the start + the headerSize */
+	isSuccessful = fseek(ds_file.fp, headerLength + start , SEEK_SET);
+	
+	return isSuccessful;
+}
+
+/* testing functions */
+void printer(){
+	int i;
+	int total = 15;
+	
+	printf("Block\t#\tstart\tlength\talloced\n");
+	
+	for(i = 0; i < total; i++) {
+		
+		printf("\t%d\t%ld\t%ld\t%d", i, ds_file.block[i].start,
+		ds_file.block[i].length, ds_file.block[i].alloced);
+		
+		printf("\n");
+		
+	}
+	
+	
+}

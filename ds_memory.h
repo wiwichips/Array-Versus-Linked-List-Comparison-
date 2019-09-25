@@ -18,7 +18,7 @@ struct ds_file_struct{
 	struct ds_blocks_struct block[MAX_BLOCKS];
 };
 
-/* Functions*/
+/* assignment functions */
 int ds_create(char *filename, long size);
 
 int ds_init(char *filename);
@@ -32,3 +32,9 @@ void *ds_read(void *ptr, long start, long bytes);
 long ds_write(long start, void *ptr, long bytes);
 
 int ds_finish();
+
+/* helper functions */
+int setPositionInFile();
+
+/* testing functions */
+void printer();
