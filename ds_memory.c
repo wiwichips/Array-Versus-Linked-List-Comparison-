@@ -38,7 +38,6 @@ int ds_create(char *filename, long size) {
 	return 0;
 }
 
-
 int ds_init(char *filename) {
 	FILE *filePointer;
 	
@@ -62,9 +61,6 @@ int ds_init(char *filename) {
 	return 0;
 }
 
-/*
- * ds malloc needs an overhaul. maybe re do it?
- */
 long ds_malloc(long amount) {
 	int i;
 	int j;
@@ -73,17 +69,12 @@ long ds_malloc(long amount) {
 	/* search through every block until find one with length >= amount */
 	for(i = 0; i < MAX_BLOCKS; i++) {
 		
-printf("#%dLOOP --> alloced = %d\tlength = %ld\tamount = %ld\n", i, ds_file.block[i].alloced, ds_file.block[i].length, amount);
-		
 		if(ds_file.block[i].alloced != 1 && ds_file.block[i].length >= amount){		
-printf("OKAY SECURED ON BLOCK %d\n aloced = %d\n", i, ds_file.block[i].alloced);
-
-
+		
 			/* look for a block to transfer the remaining bytes to */
 			for(j = 0; j < MAX_BLOCKS; j++) {
-				if(ds_file.block[j].length == 0 
-				&& !ds_file.block[j].alloced
-				&& j != i) {
+				if(!ds_file.block[j].length && !ds_file.block[j].alloced && j != i) {
+					
 					/* find the excess amount of bytes */
 					excess = ds_file.block[i].length - amount;
 					
@@ -91,13 +82,11 @@ printf("OKAY SECURED ON BLOCK %d\n aloced = %d\n", i, ds_file.block[i].alloced);
 					ds_file.block[i].length = amount;
 					ds_file.block[i].alloced = 1;
 					
-					
 					/* set the transfer block's length to the excess length */
 					ds_file.block[j].length = ds_file.block[j].length + excess;
 					
 					/* set the new start of the block found to move stuff */
 					ds_file.block[j].start = amount + ds_file.block[i].start;
-
 
 					return ds_file.block[i].start;
 				}
@@ -124,7 +113,6 @@ void ds_free(long start) {
 	printf("That block doesn't exist\n");
 }
 
-
 void *ds_read(void *ptr, long start, long bytes) {
 	long isSuccessful;
 	
@@ -145,7 +133,6 @@ void *ds_read(void *ptr, long start, long bytes) {
 	
 	return ptr;
 }
-
 
 long ds_write(long start, void *ptr, long bytes) {
 	long isSuccessful;
@@ -187,8 +174,6 @@ int ds_finish() {
 	return 1;
 }
 	
-	
-
 /* Helper Functions */
 
 int setPositionInFile(long start){

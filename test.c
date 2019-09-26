@@ -1,25 +1,53 @@
 #include "ds_memory.h"
+#include "ds_array.h"
 
 void thing();
 void readtester();
+void testarray();
+void show_array();
 
 int main(){
-	/*
-	int dude = ds_create("test.bin", 1234);
 	
-	if(dude){
-		printf("failure: %d\n", dude);
-	}
-	
-	ds_init("test.bin");
-	*/
-	thing();
-	readtester();
-	
-	
+	testarray();
 	return 0;
 }
 
+/* for ds_array */
+
+void testarray(){
+	
+	/* create binary file */
+	int dude = ds_create( "array.bin", 2048);
+	if (dude){
+		printf("Error in ds_create: %d\n", dude);
+	}
+	
+	ds_create_array();
+	
+	ds_init_array();
+	
+	show_array();
+	
+	ds_finish();
+}
+
+void show_array(){
+	int i;
+	
+	printer();
+	
+	printf("number of elements in show_array: %ld\n", elements);
+	
+	for(i = 0; i < elements; i++) {
+		printf("element number %d is %d\n", i, 2);
+		
+	}
+	
+}
+
+
+
+/* for ds_memory */
 void thing(){
 	
 	
