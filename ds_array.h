@@ -18,6 +18,10 @@ int ds_swap(long index1, long index2);
 
 long ds_find(int target);
 
-int ds_read_enements(char *filename);
+int ds_read_elements(char *filename);
 
 int ds_finish_array();
+
+/* helper functions */
+long getFileLocationArray(long index);
+int isIndexValid(long index);

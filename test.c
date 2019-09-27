@@ -5,14 +5,66 @@ void thing();
 void readtester();
 void testarray();
 void show_array();
+void insert(int v0, int v1, long v2);
+void myArrayFunction();
+void clearOutput();
 
-int main(){
+int main(){ clearOutput(); 
+	myArrayFunction();
 	
-	testarray();
+	
+	
+	
+	
+	
 	return 0;
 }
 
 /* for ds_array */
+
+void myArrayFunction(){
+	ds_create("array.bin", 2048);
+	
+	ds_create_array();	
+	
+	ds_init_array();
+	
+	printf("//// Calling printer\n");
+	printer();
+	
+	
+	
+	/*show_array();*/printf("show array\n");
+	show_array();
+	
+	/* add something to it */
+	printf("\n\ncalling ds_insert \n\n\n");
+	ds_insert(420, 0);
+	ds_insert(23, 1);
+	ds_insert(32, 2);
+	ds_insert(69,0);
+	
+	
+	/*show_array();*/ printf("show array\n");
+	show_array();
+	
+	printf("//// Calling printer\n");
+	printer();
+	
+	printf("//// Calling ds_finish\n");
+	ds_finish_array();
+	
+}
+
+void insert(int v0, int v1, long v2) {
+	int value;
+	long index;
+	value = v1;
+	index = v2;
+	ds_init_array();
+	ds_insert( value, index );
+	ds_finish_array();
+}
 
 void testarray(){
 	
@@ -33,19 +85,17 @@ void testarray(){
 
 void show_array(){
 	int i;
-	
-	printer();
-	
+	int q = 0;
+		
 	printf("number of elements in show_array: %ld\n", elements);
 	
 	for(i = 0; i < elements; i++) {
-		printf("element number %d is %d\n", i, 2);
+		ds_read(&q, i * sizeof(int) + sizeof(long), sizeof(int));
+		printf("\tarray[%d] = %d\n", i, q);
 		
 	}
 	
 }
-
-
 
 /* for ds_memory */
 void thing(){
@@ -197,3 +247,13 @@ void readtester(){
 	
 	return;
 }
+
+/* helper functions for formatting */
+void clearOutput(){
+	int i;
+	for(i = 0; i < 20; i++){
+		printf("\n");
+	}
+	return;
+}
+

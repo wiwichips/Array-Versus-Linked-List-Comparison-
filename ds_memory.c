@@ -9,7 +9,7 @@ int ds_create(char *filename, long size) {
 	char byte = 0; /* used so I can write 0 */
 	
 	/* open the file */
-	filePointer = fopen(filename, "ab");
+	filePointer = fopen(filename, "ab"); /* should this be wb+? */
 
 	/* if filePointer is NULL return 1 */
 	if (filePointer == 0) {
@@ -136,7 +136,7 @@ void *ds_read(void *ptr, long start, long bytes) {
 
 long ds_write(long start, void *ptr, long bytes) {
 	long isSuccessful;
-	
+printf("ds_write:\tstart=%ld\tbytes=%ld\n",start, bytes);
 	isSuccessful = setPositionInFile(start);
 	if(isSuccessful) {
 		return -1;
