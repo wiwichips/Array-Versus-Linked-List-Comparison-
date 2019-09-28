@@ -27,7 +27,7 @@ int ds_create(char *filename, long size) {
 	ds_file.block[0].length = size;
 	
 	/* write the array to file */
-	fwrite(ds_file.block, sizeof(ds_file.block), 1, filePointer);
+	fwrite(ds_file.block, sizeof(&ds_file.block), 1, filePointer);
 	
 	/* write the bytes to the file */
 	for(i = 0; i < size; i++) {
@@ -136,7 +136,6 @@ void *ds_read(void *ptr, long start, long bytes) {
 
 long ds_write(long start, void *ptr, long bytes) {
 	long isSuccessful;
-printf("ds_write:\tstart=%ld\tbytes=%ld\n",start, bytes);
 	isSuccessful = setPositionInFile(start);
 	if(isSuccessful) {
 		return -1;

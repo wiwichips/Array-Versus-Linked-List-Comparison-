@@ -24,32 +24,71 @@ int main(){ clearOutput();
 
 void myArrayFunction(){
 	ds_create("array.bin", 2048);
-	
 	ds_create_array();	
-	
 	ds_init_array();
 	
-	printf("//// Calling printer\n");
-	printer();
-	
-	
-	
-	/*show_array();*/printf("show array\n");
-	show_array();
 	
 	/* add something to it */
 	printf("\n\ncalling ds_insert \n\n\n");
 	ds_insert(420, 0);
-	ds_insert(23, 1);
+	ds_insert(27, 1);
 	ds_insert(32, 2);
-	ds_insert(69,0);
+	ds_insert(69,1);
+	ds_insert(69,1);
+	ds_insert(69,1);
+	ds_insert(69,1);
+	ds_insert(69,1);
+	ds_insert(69,1);
+	ds_insert(500,6);
+	ds_insert(69,1);
 	
+	printf("trying some edge cases\n");
+	
+	ds_insert(100,11);
+	ds_insert(101,13);
+	ds_insert(102,0);
+	ds_insert(103,-1);
+	
+	/* test out the replace */
+	ds_replace(8, 1);
+	ds_replace(201,-1);
+	ds_replace(202,12);
+	ds_replace(203,13);
+	ds_replace(204,100);
 	
 	/*show_array();*/ printf("show array\n");
 	show_array();
 	
-	printf("//// Calling printer\n");
-	printer();
+	/* test out ds_delete */
+	ds_delete(11);
+	
+	/*show_array();*/ printf("show array\n");
+	show_array();
+	
+	/* test out ds_delete */
+	ds_delete(-1);
+	
+	/*show_array();*/ printf("show array\n");
+	show_array();
+	
+	ds_swap(1,10);
+	
+	/*show_array();*/ printf("show array\n");
+	show_array();
+	
+	ds_swap(-1,10);
+	
+	/*show_array();*/ printf("show array\n");
+	show_array();
+	
+	
+	printf("ds_find(%d) = %ld\n", 69, ds_find(69));
+	printf("ds_find(%d) = %ld\n", 500, ds_find(500));
+	printf("ds_find(%d) = %ld\n", 8, ds_find(8));
+	printf("ds_find(%d) = %ld\n", 5000, ds_find(5000));
+	
+	/*show_array();*/ printf("show array\n");
+	show_array();
 	
 	printf("//// Calling ds_finish\n");
 	ds_finish_array();

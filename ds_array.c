@@ -29,11 +29,11 @@ int ds_create_array() {
 	isSuccessful = ds_malloc(MAX_ELEMENTS * sizeof(int));
 	
 	
-	/* fill the array with zer0es MIGHT NOT BE ALLOWED TO */
+	/* fill the array with zer0es MIGHT NOT BE ALLOWED TO 
 	for(i = 0; i < MAX_ELEMENTS; i++) {
 		ds_write(getFileLocationArray(i), &i, sizeof(int));
 		
-	}
+	}*/
 
 	if(isSuccessful == -1) {
 		return 3;
@@ -113,7 +113,7 @@ int ds_insert(int value, long index) {
 	}
 
 	/* if the index is added to the end of the list */
-	if(index = elements) {
+	if(index == elements) {
 		elements++;
 		ds_write(getFileLocationArray(index), &value, sizeof(int));
 		return 0;
@@ -124,33 +124,109 @@ int ds_insert(int value, long index) {
 	}
 
 	for(i = index; i < elements; i++) {
-
-		new = old; /* put old in new */
-
-		/*put currenet in old */
-		ds_read(&old, getFileLocationArray(index), sizeof(int));
-
-		/*put new in current */
-		ds_write(getFileLocationArray(index), &new, sizeof(int));
+		/* put old in new */
+		new = old;
+		
+		/* read the old value into the variable 'old' */
+		ds_read(&old, getFileLocationArray(i), sizeof(int));
+		
+		/* write the new value where the old one was */
+		ds_write(getFileLocationArray(i), &new, sizeof(int));
 	}
-
 	 /* write the last element */
-	ds_write(getFileLocationArray(index), &old, sizeof(int));
+	ds_write(getFileLocationArray(i), &old, sizeof(int));
 
 	elements++;
-
+	
 	return 0;
 }
 
-/*
-int ds_delete(long index);
+int ds_delete(long index) {
+	int i;
+	int temp = 0;
+	
+	if(isIndexValid(index)) {
+		return isIndexValid(index);
+	}
+	
+	if( index >= elements) {
+		return 1;
+	}
+	
+	/* write each element over the old one in the previous column */
+	for(i = index; i < elements; i++) {
+		
+		printf("looking at the index of %d\n", i);
+		
+		ds_read(&temp, getFileLocationArray(i+1), sizeof(int));
+		
+		ds_write(getFileLocationArray(i), &temp, sizeof(int));
+		
+		
+	}
+	
+	elements--;
+}
 
-int ds_swap(long index1, long index2);
+int ds_swap(long index1, long index2) {
+	long isSuccessful;
+	int value1;
+	int value2;
+	
+	/* error checking */
+	if(index1 < 0 || index2 < 0) {
+		return 10;
+	}
+	
+	if(index1 > elements || index2 > elements) {
+		return 11;
+	}
+	
+	/* Read in the value at index1 */
+	ds_read(&value1, getFileLocationArray(index1), sizeof(int));
+	
+	/* Read in the value at index2 */
+	ds_read(&value2, getFileLocationArray(index2), sizeof(int));
+	
+	/* write the value of index 2 into index 1 */
+	isSuccessful = ds_write(getFileLocationArray(index1), &value2, sizeof(int));
+	
+	if(!isSuccessful) {
+		return 20;
+	}
+	
+	
+	/* write the value of index 1 into index 2 */
+	ds_write(getFileLocationArray(index2), &value1, sizeof(int));
+	
+	if(!isSuccessful) {
+		return 21;
+	}
+	
+	return 0;
+}
 
-long ds_find(int target);
+long ds_find(int target) {
+	int i;
+	int temp = 0;
+	
+	for(i = 0; i < elements; i++) {
+		ds_read(&temp, getFileLocationArray(i), sizeof(int));
+		
+		if(temp == target) {
+			return i;
+		}
+		
+	}
+	
+	return -1;
+}
 
-int ds_read_elements(char *filename);
-*/
+int ds_read_elements(char *filename) {
+	
+	
+	return 0;
+}
 
 int ds_finish_array() {
 	int isSuccessful;
@@ -186,7 +262,8 @@ long getFileLocationArray(long index){
 		return isIndexValid(index);
 	}
 
-	printf("the size of bytes is: %ld\nthe element number is %ld of %ld\n\n",  (index * sizeof(int)) + sizeof(elements), index, elements);
+/*
+	printf("the size of bytes is: %ld\nthe element number is %ld of %ld\n\n",  (index * sizeof(int)) + sizeof(elements), index, elements);*/
 
 	return (index * sizeof(int)) + sizeof(elements);
 }
