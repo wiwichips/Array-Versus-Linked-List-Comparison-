@@ -6,7 +6,6 @@ int ds_create_array() {
 	long address;
 	long zero = 0;
 	long isSuccessful;
-	long i;
 
 	/* open the file */
 	isSuccessful = ds_init("array.bin");
@@ -28,13 +27,6 @@ int ds_create_array() {
 	/* allocate memory for the whole array */
 	isSuccessful = ds_malloc(MAX_ELEMENTS * sizeof(int));
 	
-	
-	/* fill the array with zer0es MIGHT NOT BE ALLOWED TO 
-	for(i = 0; i < MAX_ELEMENTS; i++) {
-		ds_write(getFileLocationArray(i), &i, sizeof(int));
-		
-	}*/
-
 	if(isSuccessful == -1) {
 		return 3;
 	}
@@ -81,14 +73,7 @@ int ds_replace(int value, long index) {
 		return isIndexValid(index);
 	}
 
-int tester;
-ds_read(&tester, getFileLocationArray(index), sizeof(int));
-printf("old value %d\n", tester);
-
 	isSuccessful = ds_write(getFileLocationArray(index), &value, sizeof(int));
-
-ds_read(&tester, getFileLocationArray(index), sizeof(int));
-printf("new value %d\n", tester);
 
 	if(isSuccessful == -1) {
 		return 2;
@@ -166,6 +151,7 @@ int ds_delete(long index) {
 	}
 	
 	elements--;
+	return 0;
 }
 
 int ds_swap(long index1, long index2) {
@@ -242,8 +228,6 @@ int ds_read_elements(char *filename) {
 int ds_finish_array() {
 	int isSuccessful;
 
-printf("ds_finish array b4 ds_write \n");
-
 	/* write the number of elements to the start of the file */
 	isSuccessful = ds_write(0, &elements, sizeof(long));
 
@@ -251,9 +235,6 @@ printf("ds_finish array b4 ds_write \n");
 	if(isSuccessful == -1) {
 		return 1;
 	}
-
-printf("ds_finish array b4 ds_finish \n");
-
 
 	isSuccessful = ds_finish();
 
@@ -271,9 +252,6 @@ long getFileLocationArray(long index){
 	if(isIndexValid(index)) {
 		return isIndexValid(index);
 	}
-
-/*
-	printf("the size of bytes is: %ld\nthe element number is %ld of %ld\n\n",  (index * sizeof(int)) + sizeof(elements), index, elements);*/
 
 	return (index * sizeof(int)) + sizeof(elements);
 }
