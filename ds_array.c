@@ -223,7 +223,18 @@ long ds_find(int target) {
 }
 
 int ds_read_elements(char *filename) {
+	int temp;
+	FILE *filePointer;
 	
+	/* open file, */
+	filePointer = fopen(filename, "r"); /* remember to ERROR CHECK*/
+	
+	
+	
+	/* read the number of elements */
+	while(fscanf(filePointer, "%d", &temp)!=EOF){
+		printf("val is %d\n", temp);
+	}
 	
 	return 0;
 }
@@ -252,7 +263,6 @@ printf("ds_finish array b4 ds_finish \n");
 
 	return 0;
 }
-
 
 /* helper functions */
 long getFileLocationArray(long index){

@@ -9,13 +9,10 @@ void insert(int v0, int v1, long v2);
 void myArrayFunction();
 void clearOutput();
 
-int main(){ clearOutput(); 
-	myArrayFunction();
+int main() { clearOutput(); 
+	/* myArrayFunction();*/
 	
-	
-	
-	
-	
+	ds_read_elements("test.txt");
 	
 	return 0;
 }
@@ -41,6 +38,7 @@ void myArrayFunction(){
 	ds_insert(69,1);
 	ds_insert(500,6);
 	ds_insert(69,1);
+	
 	
 	printf("trying some edge cases\n");
 	
@@ -82,16 +80,10 @@ void myArrayFunction(){
 	show_array();
 	
 	
-	printf("ds_find(%d) = %ld\n", 69, ds_find(69));
-	printf("ds_find(%d) = %ld\n", 500, ds_find(500));
-	printf("ds_find(%d) = %ld\n", 8, ds_find(8));
-	printf("ds_find(%d) = %ld\n", 5000, ds_find(5000));
-	
-	/*show_array();*/ printf("show array\n");
-	show_array();
 	
 	printf("//// Calling ds_finish\n");
 	ds_finish_array();
+	
 	
 }
 
