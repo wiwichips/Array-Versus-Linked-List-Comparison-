@@ -1,6 +1,6 @@
 #include <stdio.h>
 
-struct ds_list_item_sturct {
+struct ds_list_item_struct {
 	int item;
 	long next;
 };
@@ -24,3 +24,8 @@ int ds_read_elements(char *filename);
 int ds_finish_list();
 
 /* helper functions */
+
+
+/* tester functions DELETE THESE PROTOS */
+void createFakeListInFile();
+void listPrint();

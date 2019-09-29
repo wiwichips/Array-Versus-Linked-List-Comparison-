@@ -21,13 +21,26 @@ int main() { clearOutput();
 void calldsinit(){
 
 	ds_create("list.bin", 2048); /* create the file */
-	
-	printer();
 
+	ds_create_list();
+	ds_init_list();
 	
-	ds_create_list(); /**/
 	
-	ds_insert(8,3);
+	ds_insert(101,0);
+	ds_insert(102,1);
+	ds_insert(103,2);
+	
+	ds_insert(204,0);
+	
+	ds_insert(305,-1);
+	ds_insert(306,-23);
+	ds_insert(307,0);
+	ds_insert(308,8);
+	ds_insert(309,7);
+	ds_insert(310,9);
+	
+	listPrint();
+	printer();
 
 }
 

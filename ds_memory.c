@@ -193,7 +193,8 @@ int setPositionInFile(long start){
 	int isSuccessful = 0; 
 	
 	/* find the size of the header */
-	long headerLength = sizeof(ds_file.block) * MAX_BLOCKS;
+/*	long headerLength = sizeof(ds_file.block) * MAX_BLOCKS;*/
+	long headerLength = sizeof(struct ds_blocks_struct) * MAX_BLOCKS;
 	
 	/* set the file position to the start + the headerSize */
 	isSuccessful = fseek(ds_file.fp, headerLength + start , SEEK_SET);
