@@ -65,20 +65,16 @@ int ds_insert(int value, long index) {
 		previous_loc = previous.next;
 		
 		ds_read(&previous, previous.next, size);
-		
-		printf("going through loop, currently ats index %d\n", i);
 	}
 	
 	/* read the head pointer into head */
 	ds_read(&head, 0, sizeof(long));
 	
-	if(i == 0 && previous_loc > 0) { printf("i == 0 && previous_loc\n");
+	if(i == 0 && previous_loc > 0) {
 		
 		new.next = previous.next;
-		printf("new.next = %ld\n", new.next);
 		
 		previous.next = ds_malloc(size);
-		printf("the location is at... %ld\n", previous.next);
 		
 		/* overwrite the old node */
 		ds_write(previous_loc, &previous, size);
@@ -141,9 +137,44 @@ int ds_swap(long index1, long index2);
 long ds_find(int target);
 
 int ds_read_elements(char *filename);
-
-int ds_finish_list();
 */
+
+int ds_finish_list() {
+	int isSuccessful;
+	
+	isSuccessful = ds_finish();
+
+	if(!isSuccessful) {
+		return 1;
+	}
+	
+	return 0;
+	
+}
+
+/* ~~~~~~~~ HELPER FUNCTIONS ~~~~~~~~ */
+
+/* returns the address when given an index. Return neg val on fail */
+long addressor(long index) {
+	int i;
+	long pointer;
+	long size = sizeof(struct ds_list_item_struct);
+	struct ds_list_item_struct new;
+	
+	/* read the first pointer to the first node */
+	ds_read(&pointer, 0, sizeof(long));
+	
+	for(i = index; i > 0; i--) {
+		
+		ds_read(&new, pointer, size);
+		pointer = new.next;
+		
+	}
+	
+	return new.next;
+	
+}
+
 
 /* test functions DELETE THESE LATER 
 long ds_write(long start, void *ptr, long bytes)

@@ -24,7 +24,7 @@ int ds_read_elements(char *filename);
 int ds_finish_list();
 
 /* helper functions */
-
+long addressor(long index);
 
 /* tester functions DELETE THESE PROTOS */
 void createFakeListInFile();

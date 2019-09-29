@@ -40,7 +40,15 @@ void calldsinit(){
 	ds_insert(310,9);
 	
 	listPrint();
+	
+	int dude = addressor(6);
+	
+	printf("addressor(%d) = %d\n", 6, dude);
+	
+
 	printer();
+	
+	ds_finish_list();
 
 }
 
