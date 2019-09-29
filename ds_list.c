@@ -33,9 +33,26 @@ int ds_init_list() {
 	return 0;
 }
 
-/*
-int ds_replace(int value, long index);
-*/
+/* do error checking */
+int ds_replace(int value, long index) {
+	long address;
+	struct ds_list_item_struct temp;
+	long size = sizeof(struct ds_list_item_struct);
+	
+	/* get the address of the index */
+	address = addressor(index);
+	
+	/* read in the struct at thet address */
+	ds_read(&temp, address, size);
+	
+	/* change the item to the value */
+	temp.item = value;
+	
+	/* write the struct to the file */
+	ds_write(address, &temp, size);
+	
+	return 0;
+}
 
 int ds_insert(int value, long index) {
 	
@@ -113,31 +130,131 @@ int ds_insert(int value, long index) {
 	return 0;
 }
 
-/*
-int ds_delete(long index);
+int ds_delete(long index) {
+	long address;
+	struct ds_list_item_struct tempPre;
+	struct ds_list_item_struct temp;
+	long size = sizeof(struct ds_list_item_struct);
+	
+	if(index < 0) {
+		return 1;
+	}
+	
+	/* get the address of the index and read it*/
+	address = addressor(index);
+	
+	if(address < 0) {
+		return 2;
+	}
+	
+	ds_read(&temp, address, size);
+	
+	/* ds_free the memory for the specified index */
+	ds_free(address);	
+	
+	if(index == 0) {
+		ds_write(0, &temp.next, sizeof(long));
+		return 0;
+	}
+	
+	/* get the address of the index before and read it*/
+	address = addressor(index - 1);
+	ds_read(&tempPre, address, size);
+	
+	/* set the next for the previous block */
+	tempPre.next = temp.next;
+	
+	/* overwrite the node before the index with updated next */
+	ds_write(address, &tempPre, size);
+	
+	return 0;
+}
 
-int ds_swap(long index1, long index2);
+int ds_swap(long index1, long index2) {
+	long address1;
+	long address2;
+	long tempAddress;
+	struct ds_list_item_struct temp1;
+	struct ds_list_item_struct temp2;
+	long size = sizeof(struct ds_list_item_struct);
+	
+	if(index1 < 0 || index2 < 0) {
+		return 1;
+	}
+	
+	/* get the addresses of the indecies */
+	address1 = addressor(index1);
+	address2 = addressor(index2);
+	
+	if(address1 < 0 || address2 <0) {
+		return 2;
+	}
+	
+	/* read in the nodes */
+	ds_read(&temp1, address1, size);
+	ds_read(&temp2, address2, size);
+	
+	/* swap the pointers */
+	tempAddress = temp1.next;
+	temp1.next = temp2.next;
+	temp2.next = tempAddress;
+	
+	/* write them in their swapped locations */
+	ds_write(address2, &temp1, size);
+	ds_write(address1, &temp2, size);
+	
+	return 0;
+}
 
-long ds_find(int target);
+long ds_find(int target) {
+	int i;
+	long pointer;
+	long size = sizeof(struct ds_list_item_struct);
+	struct ds_list_item_struct new;
 
-int ds_read_elements(char *filename);
+	/* read in the first long */
+	ds_read(&new.next, 0, sizeof(long));
+	
+	for(i = 0; new.item == target || new.next != -1; i++) {
+		/* if this is reached before, there is an error */
+		if(new.next == -1) {
+			return 1;
+		}
+		
+		/* save the old poijnter */
+		pointer = new.next;
+		
+		/* read in the new struct */
+		ds_read(&new, new.next, size);
+				
+		if(new.item == target) {
+			return pointer;
+		}
+	}
 
-int ds_finish_list();
-*/
+	
+	return -10;
+}
 
-/* test functions DELETE THESE LATER 
-long ds_write(long start, void *ptr, long bytes)
-void *ds_read(void *ptr, long start, long bytes)
-*/
-/*
-int ds_delete(long index);
-
-int ds_swap(long index1, long index2);
-
-long ds_find(int target);
-
-int ds_read_elements(char *filename);
-*/
+/* have not error chekced this yet */
+int ds_read_elements(char *filename) {
+	int temp;
+	int i;
+	FILE *filePointer;
+	
+	/* open file, */
+	filePointer = fopen(filename, "r"); /* remember to ERROR CHECK*/
+	
+	i = 0;
+	
+	/* read the number of elements */
+	while(fscanf(filePointer, "%d", &temp)!=EOF){
+		ds_insert(temp,i);
+		i++;
+	}
+	
+	return 0;
+}
 
 int ds_finish_list() {
 	int isSuccessful;
@@ -161,18 +278,31 @@ long addressor(long index) {
 	long size = sizeof(struct ds_list_item_struct);
 	struct ds_list_item_struct new;
 	
+	if(index < 0) {
+		return -1;
+	}
+	
 	/* read the first pointer to the first node */
 	ds_read(&pointer, 0, sizeof(long));
 	
+	if(index == 0 && pointer >0) {
+		return pointer;
+	}
+	
+	if(pointer == -1) {
+		return -2;
+	}
+	
 	for(i = index; i > 0; i--) {
-		
 		ds_read(&new, pointer, size);
 		pointer = new.next;
 		
+		if(new.next==-1){
+			return -3;
+		}
 	}
 	
 	return new.next;
-	
 }
 
 
@@ -180,60 +310,14 @@ long addressor(long index) {
 long ds_write(long start, void *ptr, long bytes)
 void *ds_read(void *ptr, long start, long bytes)
 */
-void createFakeListInFile() {
-	long head = sizeof(long);
-	struct ds_list_item_struct plug1;
-	struct ds_list_item_struct plug2;
-	struct ds_list_item_struct plug3;
-	struct ds_list_item_struct plug4;
-	long size = sizeof(struct ds_list_item_struct);
-	struct ds_list_item_struct temp;
-	
-	/* made the head poiner point to 8 */
-	ds_write(0, &head, sizeof(long));
-	
-	ds_malloc(size);
-	
-	/* create three nodes */
-	plug1.item = 101;
-	plug1.next = ds_malloc(size);
-	
-	plug2.item = 102;
-	plug2.next = ds_malloc(size);
-	
-	plug3.item = 103;
-	plug3.next = ds_malloc(size);
-	
-	plug4.item = 104;
-	plug4.next = -1;
-	
-	/* write them to file */
-	ds_write(head, &plug1, size);
-	ds_write(plug1.next, &plug2, size);
-	ds_write(plug2.next, &plug3, size);
-	ds_write(plug3.next, &plug4, size);
-	
-	/* read them to output to test they work */
-	ds_read(&temp, head, size);
-	printf(")\tthe item is %d\n\tthe next is %ld\n\n", temp.item, temp.next);
-	
-	ds_read(&temp, plug1.next, size);
-	printf(")\tthe item is %d\n\tthe next is %ld\n\n", temp.item, temp.next);
-	
-	ds_read(&temp, plug2.next, size);
-	printf(")\tthe item is %d\n\tthe next is %ld\n\n", temp.item, temp.next);
-	
-	ds_read(&temp, plug3.next, size);
-	printf(")\tthe item is %d\n\tthe next is %ld\n\n", temp.item, temp.next);
-	
-	return;
-}
 
-void listPrint(){ printf("~~~~~~~~~~~ listPrint ~~~~~~~~~~~\n");
+void listPrint(){
 	int i;
 	long dog;
 	struct ds_list_item_struct cat;
 	long catSize = sizeof(struct ds_list_item_struct);
+	
+	printf("~~~~~~~~~~~ listPrint ~~~~~~~~~~~\n");
 	
 	ds_read(&dog, 0, sizeof(long));
 	

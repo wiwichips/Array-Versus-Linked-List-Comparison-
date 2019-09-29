@@ -9,13 +9,15 @@ void insert(int v0, int v1, long v2);
 void myArrayFunction();
 void clearOutput();
 void calldsinit();
+void creamList();
 
 int main() { clearOutput(); 
 
-	calldsinit();
-
 	return 0;
 }
+
+
+
 
 /* for ds_list */
 void calldsinit(){
@@ -35,16 +37,21 @@ void calldsinit(){
 	ds_insert(305,-1);
 	ds_insert(306,-23);
 	ds_insert(307,0);
-	ds_insert(308,8);
 	ds_insert(309,7);
-	ds_insert(310,9);
+	ds_delete(1);
+	ds_delete(1);
+	ds_delete(1);
+	ds_insert(410,2);
+	ds_insert(411,2);
+	ds_insert(412,3);
 	
 	listPrint();
 	
-	int dude = addressor(6);
+	printf("ds_find(410) = %ld\n", ds_find(410));
 	
-	printf("addressor(%d) = %d\n", 6, dude);
+	listPrint();
 	
+	printf("find ds_find(%d) = %ld\n", 309, ds_find(309));
 
 	printer();
 	
@@ -52,7 +59,31 @@ void calldsinit(){
 
 }
 
+void creamList(){
+	
+	ds_create("list.bin", 2048); /* create the file */
 
+	ds_create_list();
+	
+
+	ds_init_list();
+	ds_insert( 0, 0 );
+	ds_insert( 1, 1 );
+	ds_insert( 1, 2 );
+	ds_insert( -1, 0 );
+	ds_insert( -2, 0 );
+	ds_insert( -3, 0 );
+
+	
+
+	listPrint();
+
+	ds_finish_list();
+	
+	/* should return 22 reads and 12 writes and the correct other stuff */
+	
+	return;
+}
 
 /* for ds_array */
 /*

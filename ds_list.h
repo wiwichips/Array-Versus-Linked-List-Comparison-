@@ -27,5 +27,4 @@ int ds_finish_list();
 long addressor(long index);
 
 /* tester functions DELETE THESE PROTOS */
-void createFakeListInFile();
 void listPrint();
