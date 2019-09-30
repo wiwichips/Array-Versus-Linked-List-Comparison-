@@ -2,8 +2,6 @@
 
 #define MAX_ELEMENTS 256
 
-long elements; /* holds the current number of elements in the array */
-
 int ds_create_array();
 
 int ds_init_array();

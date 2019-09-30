@@ -1,6 +1,7 @@
 #include "ds_array.h"
 #include "ds_memory.h"
 
+long elements; /* holds the current number of elements in the array */
 
 int ds_create_array() {
 	long address;
