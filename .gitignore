@@ -3,3 +3,6 @@
 *.out
 l
 *.bin
+*.csv
+*.txt
+test.c

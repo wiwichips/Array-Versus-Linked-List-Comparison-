@@ -1,5 +1,6 @@
 #include "ds_memory.h"
-#include "ds_list.h"
+#include "ds_array.h"
+#include <stdlib.h> 
 
 void thing();
 void readtester();
@@ -10,19 +11,196 @@ void myArrayFunction();
 void clearOutput();
 void calldsinit();
 void creamList();
+void makeARandomFile(int howMany);
+void hahahaha();
+int runExperimentsW(int howMany);
+int runExperimentsR(int howMany);
+int dude(int howMany);
+int arraydude(int howMany);
+void runner();
 
 int main() { clearOutput(); 
-
+	
+	runner();
+	
 	return 0;
+}
+
+void runner() {
+	int i;
+	int j;
+	FILE *fp;
+	
+	fp = fopen("writes.csv", "w");
+	
+	/* first lets worry about the reads */
+	for( j = 0; j <30; j++) {
+		
+		
+		for(i = 10; i <=100; i = i +10) {
+			fprintf(fp, "%d,", arraydude(i));
+			
+			
+			
+		}
+		
+		fprintf(fp, "\n");
+
+
+	}
+	
+	
+	fclose(fp);
+	
+	
+}
+
+int arraydude(int howMany){
+	int i;
+	int numThings;
+	
+	
+	
+	ds_create("array.bin", 8000); /* create the file */
+	ds_create_array();	
+	ds_init_array();
+
+	
+	makeARandomFile(howMany);
+	ds_read_elements("test.txt");
+	
+	for(i = 0; i < howMany; i++) {
+		ds_delete(rand()%howMany);
+		
+	}
+	
+	numThings = ds_counts.reads;
+	
+	ds_finish_array();
+	
+	return numThings;
+
+}
+/*
+int dude(int howMany){
+	int i;
+	int numThings;
+	
+	
+	
+	ds_create("list.bin", 2048); 
+
+	ds_create_list();
+	ds_init_list();
+	
+	makeARandomFile(howMany);
+	ds_read_elements("test.txt");
+	
+	for(i = 0; i < howMany; i++) {
+		ds_swap(rand()%howMany, rand()%howMany);
+		
+	}
+	
+	numThings = ds_counts.reads;
+	
+	ds_finish_list();
+	
+	return numThings;
+
+}
+*/
+/* create a file - makes a file with 100 random ints */
+void makeARandomFile(int howMany) {
+	int i;
+	FILE *fp;
+	int num;
+	fp = fopen("test.txt", "w");
+	
+	for(i =0; i < howMany; i++) {
+		num = rand();
+		fprintf(fp, "%d\n", num);
+		
+	}
+	
+	fclose(fp);
+	
+	
+}
+
+/*
+
+void hahahaha(){
+	
+	
+	int i;
+	FILE *fp;
+	int num;
+	fp = fopen("writes.csv", "w");
+	
+	
+		fprintf(fp, "%d,%d,%d,%d,%d,%d,%d,%d,%d,%d\n",
+	runExperimentsW(10),
+	runExperimentsW(20),
+	runExperimentsW(30),
+	runExperimentsW(40),
+	runExperimentsW(50),
+	runExperimentsW(60),
+	runExperimentsW(70),
+	runExperimentsW(80),
+	runExperimentsW(90),
+	runExperimentsW(100));
+
+	
+	fclose(fp);
+	
+	
+	
+	
+
+	
+}
+
+int runExperimentsW(int howMany) {
+	int i;
+	int num;
+	
+	ds_create("list.bin", 2048); 
+
+	ds_create_list();
+	ds_init_list();
+	
+	makeARandomFile(howMany);
+	
+	for(i = 0; i < 1; i++) {
+		ds_create("list.bin", 2048); 
+
+	ds_create_list();
+	ds_init_list();
+		
+		num = rand()%howMany;
+		printf("\n\nRUNEXPERIMENTSW\n%d\n", num);
+		
+		ds_read_elements("test.txt");
+		
+		ds_replace(rand(),num);
+		
+			
+	
+
+	ds_finish_list();
+	}
+	
+
+	
+	return ds_counts.writes;
 }
 
 
 
 
-/* for ds_list */
 void calldsinit(){
 
-	ds_create("list.bin", 2048); /* create the file */
+	ds_create("list.bin", 2048);
 
 	ds_create_list();
 	ds_init_list();
@@ -61,7 +239,7 @@ void calldsinit(){
 
 void creamList(){
 	
-	ds_create("list.bin", 2048); /* create the file */
+	ds_create("list.bin", 2048);
 
 	ds_create_list();
 	
@@ -80,13 +258,12 @@ void creamList(){
 
 	ds_finish_list();
 	
-	/* should return 22 reads and 12 writes and the correct other stuff */
 	
 	return;
-}
+}*/
 
 /* for ds_array */
-/*
+
 void myArrayFunction(){
 	ds_create("array.bin", 2048);
 	ds_create_array();	
@@ -94,53 +271,11 @@ void myArrayFunction(){
 	
 	
 	printf("\n\ncalling ds_insert \n\n\n");
-	ds_insert(420, 0);
-	ds_insert(27, 1);
-	ds_insert(32, 2);
-	ds_insert(69,1);
-	ds_insert(69,1);
-	ds_insert(69,1);
-	ds_insert(69,1);
-	ds_insert(69,1);
-	ds_insert(69,1);
-	ds_insert(500,6);
-	ds_insert(69,1);
 	
-	
-	printf("trying some edge cases\n");
-	
-	ds_insert(100,11);
-	ds_insert(101,13);
-	ds_insert(102,0);
-	ds_insert(103,-1);
-	
-	ds_replace(8, 1);
-	ds_replace(201,-1);
-	ds_replace(202,12);
-	ds_replace(203,13);
-	ds_replace(204,100);
-	
+	makeARandomFile(10);
+	ds_read_elements("test.txt");
  printf("show array\n");
 	show_array();
-	
-	
-	ds_delete(11);
-	
-	 printf("show array\n");
-	show_array();
-	
-	
-	ds_delete(-1);
-	
-	 printf("show array\n");
-	show_array();
-	
-	ds_swap(1,10);
-	
-	 printf("show array\n");
-	show_array();
-	
-	ds_swap(-1,10);
 	
 	 printf("show array\n");
 	show_array();
@@ -343,7 +478,7 @@ void readtester(){
 	ds_finish();
 	
 	return;
-}*/
+}
 
 
 void clearOutput(){

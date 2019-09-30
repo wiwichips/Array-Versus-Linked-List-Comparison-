@@ -141,7 +141,6 @@ int ds_delete(long index) {
 	/* write each element over the old one in the previous column */
 	for(i = index; i < elements; i++) {
 		
-		printf("looking at the index of %d\n", i);
 		
 		ds_read(&temp, getFileLocationArray(i+1), sizeof(int));
 		
@@ -208,19 +207,25 @@ long ds_find(int target) {
 	return -1;
 }
 
+
+
 int ds_read_elements(char *filename) {
 	int temp;
+	int i;
 	FILE *filePointer;
-	
+
 	/* open file, */
 	filePointer = fopen(filename, "r"); /* remember to ERROR CHECK*/
-	
-	
-	
+
+	i = 0;
+
 	/* read the number of elements */
 	while(fscanf(filePointer, "%d", &temp)!=EOF){
-		printf("val is %d\n", temp);
+		ds_insert(temp,i);
+		i++;
 	}
+
+	fclose(filePointer);
 	
 	return 0;
 }

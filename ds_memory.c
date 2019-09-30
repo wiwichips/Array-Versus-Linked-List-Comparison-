@@ -1,7 +1,7 @@
 #include "ds_memory.h"
 
 struct ds_file_struct ds_file;
-struct ds_counts_struct ds_counts;
+/*struct ds_counts_struct ds_counts;*/
 
 int ds_create(char *filename, long size) {
 	FILE *filePointer;
@@ -102,7 +102,6 @@ long ds_malloc(long amount) {
 			}	
 		}
 	}
-	printf("failure in malloc\n");
 	return -1;
 }
 

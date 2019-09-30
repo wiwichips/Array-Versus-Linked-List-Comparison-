@@ -66,13 +66,12 @@ int ds_insert(int value, long index) {
 	
 	previous_loc = 0;
 	
-	
 	/* set the node to be inserted item to value */
 	new.item = value;
-	
+
 	/* read in the first long */
 	ds_read(&previous.next, 0, sizeof(long));
-	
+
 	for(i = index; i > 0; i--) {
 		/* if this is reached before, there is an error */
 		if(previous.next == -1) {
@@ -83,7 +82,6 @@ int ds_insert(int value, long index) {
 		
 		ds_read(&previous, previous.next, size);
 	}
-	
 	/* read the head pointer into head */
 	ds_read(&head, 0, sizeof(long));
 	
@@ -114,7 +112,7 @@ int ds_insert(int value, long index) {
 		/* write the new node to the file */
 		ds_write(head, &new, size);
 		
-	} else { printf("else\n");
+	} else {
 		new.next = -1;
 		
 		starter = ds_malloc(size);
@@ -124,9 +122,9 @@ int ds_insert(int value, long index) {
 		
 		/* write the new node to be inserted */
 		ds_write(starter, &new, size);
-		
 	}
-	
+
+
 	return 0;
 }
 
@@ -241,17 +239,19 @@ int ds_read_elements(char *filename) {
 	int temp;
 	int i;
 	FILE *filePointer;
-	
+
 	/* open file, */
 	filePointer = fopen(filename, "r"); /* remember to ERROR CHECK*/
-	
+
 	i = 0;
-	
+
 	/* read the number of elements */
 	while(fscanf(filePointer, "%d", &temp)!=EOF){
 		ds_insert(temp,i);
 		i++;
 	}
+
+	fclose(filePointer);
 	
 	return 0;
 }

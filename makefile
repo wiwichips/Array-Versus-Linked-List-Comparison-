@@ -1,9 +1,9 @@
 
-l: ds_memory.o ds_list.o test.o ds_memory.h ds_list.h
-	gcc test.o ds_memory.o ds_list.o ds_list.h ds_memory.h -o l
+#l: ds_memory.o ds_list.o test.o ds_memory.h ds_list.h
+#	gcc test.o ds_memory.o ds_list.o ds_list.h ds_memory.h -o l
 
-#l: ds_memory.o ds_array.o ds_list.o test.o ds_memory.h ds_array.h ds_list.h
-#	gcc test.o ds_memory.o ds_array.o ds_list.o ds_list.h ds_memory.h ds_array.h -o l
+l: ds_memory.o ds_array.o test.o ds_memory.h ds_array.h
+	gcc test.o ds_memory.o ds_array.o ds_memory.h ds_array.h -o l
 	
 test.o: test.c 
 	gcc test.c -Wall -ansi -pedantic -o test.o -c

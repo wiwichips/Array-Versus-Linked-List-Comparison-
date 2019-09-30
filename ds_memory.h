@@ -2,6 +2,10 @@
 
 #define MAX_BLOCKS 4096
 
+/* REMOVE THIS LATER */
+struct ds_counts_struct ds_counts;
+/* NO GLIBAL VAREIABLES IN THE HEADER */
+
 struct ds_counts_struct{
 	int reads;
 	int writes;
