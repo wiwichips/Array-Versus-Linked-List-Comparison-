@@ -1,7 +1,7 @@
 #include "ds_memory.h"
 
 struct ds_file_struct ds_file;
-/*struct ds_counts_struct ds_counts;*/
+struct ds_counts_struct ds_counts;
 
 int ds_create(char *filename, long size) {
 	FILE *filePointer;
@@ -117,8 +117,7 @@ void ds_free(long start) {
 		
 	}
 	
-	/* print error message */
-	printf("That block doesn't exist\n");
+	return;
 }
 
 
@@ -199,23 +198,4 @@ int setPositionInFile(long start){
 	isSuccessful = fseek(ds_file.fp, headerLength + start , SEEK_SET);
 	
 	return isSuccessful;
-}
-
-/* testing functions */
-void printer(){
-	int i;
-	int total = 15;
-	
-	printf("Block\t#\tstart\tlength\talloced\n");
-	
-	for(i = 0; i < total; i++) {
-		
-		printf("\t%d\t%ld\t%ld\t%d", i, ds_file.block[i].start,
-		ds_file.block[i].length, ds_file.block[i].alloced);
-		
-		printf("\n");
-		
-	}
-	
-	
 }
